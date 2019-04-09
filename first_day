@@ -1,41 +1,43 @@
-const switcher = document.querySelector('#cbx'),//создаём контейнер
+const switcher = document.querySelector('#cbx'),                //создаём контейнер
     more = document.querySelector('.more'),
     modal = document.querySelector('.modal'),
     videos = document.querySelectorAll('.videos__item');
-let player;
+let player;// переменная будет изменятся 
 
-function bindSlideToggle(trigger, boxBody, content, openClass) {
+function bindSlideToggle(trigger, boxBody, content, openClass) {//созаём функцию для открытия закрытия меню, функция является универсальной
     let button = {
-        'element': document.querySelector(trigger),
-        'active': false
+        'element': document.querySelector(trigger),             //ключь  element значение trigger
+        'active': false// изначально не активна
     };
     const box = document.querySelector(boxBody),
         boxContent = document.querySelector(content);
     
-    button.element.addEventListener('click', () => {
-        if (button.active === false) {
-            button.active = true;
-            box.style.height = boxContent.clientHeight + 'px';
-            box.classList.add(openClass);//Активный класс для меню
-        } else {
-            button.active = false;
-            box.style.height = 0 + 'px';
-            box.classList.remove(openClass);
+    button.element.addEventListener('click', () => {            //обработчик события
+        if (button.active === false) {                          //проверка условий если кнопка не активна то:
+            button.active = true;                               //делаем её активной 
+            box.style.height = boxContent.clientHeight + 'px';  //добавляем высоту 
+            box.classList.add(openClass);                       //добавляем активный класс для меню
+        } else {                                                
+            button.active = false;                              //если активная делаем её не активной
+            box.style.height = 0 + 'px';                        //убираем высоту   
+            box.classList.remove(openClass);                    // удаляем активный класс
         }
     });    
 
 }        
 
-bindSlideToggle('.hamburger', '[data-slide="nav"]', '.header__menu', 'slide-active');
+bindSlideToggle('.hamburger', '[data-slide="nav"]', '.header__menu', 'slide-active');// запускаем функцию 
 
-function switchMode() {
-    if (night === false) {
-        night = true;
-        document.body.classList.add('night');
-        document.querySelectorAll('.hamburger > line').forEach(item =>{
-            item.style.stroke = '#fff';
+function switchMode() {                                 //функция для включения ночного режима
+    if (night === false) {                              //Если ночной режи отключен то:
+        night = true;                                   // включаем его
+        document.body.classList.add('night');           // добавляем класс night   
+        document.querySelectorAll('.hamburger > line').forEach(item =>{//получаем все элементы line селектора hamburger
+            item.style.stroke = '#fff';                 //(forEach переберает все элементы) красим в белый цвет 
         });
-
+        
+            // анологочино меняем цвета на видео и заголовках
+            
         document.querySelectorAll('.videos__item-descr').forEach(item =>{
             item.style.color = '#fff';
         });
@@ -46,11 +48,11 @@ function switchMode() {
 
         document.querySelector('.header__item-descr').style.color = '#fff';
 
-        document.querySelector('.logo > img').src = 'logo/youtube_night.svg';
+        document.querySelector('.logo > img').src = 'logo/youtube_night.svg';// меняем лого для ночного режима
     }  else {
-        night = false;
-        document.body.classList.remove('night');
-        document.querySelectorAll('.hamburger > line').forEach(item =>{
+        night = false;                                                  //если включен то отключаем
+        document.body.classList.remove('night');                        //удаляем класс
+        document.querySelectorAll('.hamburger > line').forEach(item =>{ //красим в чёрный цвет
             item.style.stroke = '#000';
         });
 
@@ -63,13 +65,13 @@ function switchMode() {
 
         document.querySelector('.header__item-descr').style.color = '#000';
 
-        document.querySelector('.logo > img').src = 'logo/youtube.svg';
+        document.querySelector('.logo > img').src = 'logo/youtube.svg'; // меняем лого для дневного режима
 
     }
 }
 
-let night = false
-switcher.addEventListener('change', () => {
+let night = false; 
+switcher.addEventListener('change', () => {//здесь используется переключатель а не клик поэтому change
     switchMode();
 });
 
@@ -83,16 +85,16 @@ const data = [
     ['X9SmcY3lM-U', '7BvHoh0BrMw', 'mC8JW_aG2EM']
 ];
 
-more.addEventListener('click', () => {
+more.addEventListener('click', () => {               //вешаем обработчик на ранее созданную кнопку
     debugger;
     const videosWrapper = document.querySelector('.videos__wrapper');
-    more.remove();
+    more.remove();                                   // при нажатии конпка исчезает
 
-    for (let i = 0; i < data[0].length; i++) {
-        let card = document.createElement('a');
-        card.classList.add('videos__item', 'videos__item-active');
-        card.setAttribute('data-url', data[3][i]);
-        card.innerHTML = `<img src = "${data[0][i]}" alt = "thumb">
+    for (let i = 0; i < data[0].length; i++) {       // цикл будет идти до тех пор пока данные не закончатся
+        let card = document.createElement('a');      //создаём ссылку в переменной card
+        card.classList.add('videos__item', 'videos__item-active'); // добавляем класс
+        card.setAttribute('data-url', data[3][i]);    // устанавливем атрибут
+        card.innerHTML = `<img src = "${data[0][i]}" alt = "thumb">//создаём на странице карточку подтягивая данные из массива
             <div class="videos__item-descr">
                 ${data[1][i]} 
             </div> 
@@ -100,9 +102,9 @@ more.addEventListener('click', () => {
                 ${data[2][i]} 
             </div>
         `;
-        videosWrapper.appendChild(card);
-        setTimeout (() => {
-            card.classList.remove('videos__item-active')
-        }, 10);
+        videosWrapper.appendChild(card);    //в обёртку закидывет карточки 
+        setTimeout (() => {                 //эфект красивого появление карточек
+            card.classList.remove('videos__item-active')//удаление класса
+        }, 10);                             //через 10 млс
     }
 });
